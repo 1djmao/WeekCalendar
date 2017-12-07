@@ -22,17 +22,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         weekCalendar = (WeekCalendar) findViewById(R.id.week_calendar);
         List<String> list = new ArrayList<>();
-        list.add("2016-09-13");
-        list.add("2016-10-13");
-        list.add("2016-10-11");
-        list.add("2016-10-10");
-        list.add("2016-10-16");
+        list.add("2017-12-13");
+        list.add("2017-12-11");
+        list.add("2017-12-10");
+        list.add("2017-12-16");
         weekCalendar.setSelectDates(list);
         //设置日历点击事件
         weekCalendar.setOnDateClickListener(new WeekCalendar.OnDateClickListener() {
             @Override
             public void onDateClick(String time) {
-                Toast.makeText(MainActivity.this, time, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, weekCalendar.getTheDayOfSelected(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -42,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, year + "-" + month, Toast.LENGTH_SHORT).show();
             }
         });
+
+        weekCalendar.showSomeDay(2016,2,01);
+        Toast.makeText(MainActivity.this, weekCalendar.getTheDayOfSelected(), Toast.LENGTH_SHORT).show();
+
+
+
 
     }
 }

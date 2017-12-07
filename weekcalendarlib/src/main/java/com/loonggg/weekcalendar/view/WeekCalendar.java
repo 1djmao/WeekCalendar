@@ -319,6 +319,7 @@ public class WeekCalendar extends LinearLayout {
             weekView.setText(WeekCalendarUtil.getWeekString(mContext).get(position));
             dayView.setTextSize(daysTextSize);
             weekView.setTextSize(weekTextSize);
+            weekView.setTextColor(weekTextColor);
             weekView.setBackgroundColor(weekBackgroundColor);
             if (isCornerMark) {
                 corner_mark_iv.setBackgroundDrawable(cornerMarkBg);
@@ -346,7 +347,7 @@ public class WeekCalendar extends LinearLayout {
                 dayView.setBackgroundDrawable(null);
             } else {
                 dayView.setBackgroundDrawable(null);
-                dayView.setTextColor(weekTextColor);
+                dayView.setTextColor(daysTextColor);
             }
 
             if (selectDateList != null) {
@@ -418,7 +419,7 @@ public class WeekCalendar extends LinearLayout {
      *
      * @return
      */
-    private String getTheDayOfSelected() {
+    public String getTheDayOfSelected() {
         if (theDayOfSelected != null) {
             String sYear = String.valueOf(theDayOfSelected.year);
             String sMonth = String.valueOf(theDayOfSelected.month);
@@ -484,6 +485,56 @@ public class WeekCalendar extends LinearLayout {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 选定并跳转到某一天
+     * @param year
+     * @param month
+     * @param day
+     */
+    public void showSomeDay(int year,int month,int day){
+        CalendarData today = new CalendarData(year,month,day);
+
+        if (!isTodayIsSelectedDay() || weekPosition != WeekCalendarUtil.getTheWeekPosition(weeks, today)) {//如果显示的不是当天
+            int mode = 0;//动画模式（0 没有动画，1 向左动 ， 2 向右动）
+            if (theDayForShow.year > today.year || theDayForShow.month > today.month) {//下一个月
+                getWholeMonthDatas(today);
+                weekPosition = WeekCalendarUtil.getTheWeekPosition(weeks, today);
+                mode = 2;
+            } else if (theDayForShow.year < today.year || theDayForShow.month < today.month) {//上一个月
+                getWholeMonthDatas(today);
+                weekPosition = WeekCalendarUtil.getTheWeekPosition(weeks, today);
+                mode = 1;
+            } else {//本月
+                int position = WeekCalendarUtil.getTheWeekPosition(weeks, today);
+                if (weekPosition < position) {//上个星期
+                    mode = 1;
+                } else if (weekPosition > position) {//下个星期
+                    mode = 2;
+                }
+                weekPosition = position;
+            }
+
+            theDayOfSelected = today;
+            theDayForShow = today;
+            GridView mGridView = addDayView();
+            mGridView.setAdapter(new CalendarAdapter(context, weeks.get(weekPosition)));
+            mRvDay.addView(mGridView, 1);
+            if (mode == 2) {
+                mRvDay.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.push_right_in));
+                mRvDay.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.push_right_out));
+            } else if (mode == 1) {
+                mRvDay.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.push_left_in));
+                mRvDay.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.push_left_out));
+            } else {
+                mRvDay.setInAnimation(null);
+                mRvDay.setOutAnimation(null);
+            }
+            mRvDay.showNext();
+            mRvDay.removeViewAt(0);
+        }
+
     }
 
 }
