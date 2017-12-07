@@ -2,6 +2,11 @@
 周日历，Weekly Calendar。
 ## 效果图
 ![](https://raw.githubusercontent.com/loonggg/WeekCalendar/master/image/ss.gif)
+## 更新记录
+### v 1.5
+1. 修复了 weekTextColor 失效的问题
+2. 增加了 getTheDayOfSelected 接口，获取到当前选择的日期
+3. 增加了 showSomeDay 接口，可以设置选择某一天
 ## 使用方法（usage）
 ### Step 1. Add the JitPack repository to your build file
 ```java
@@ -18,7 +23,7 @@ Add it in your root build.gradle at the end of repositories:
 ### Step 2. Add the dependency
 ```java
 	dependencies {
-	    compile 'com.github.loonggg:WeekCalendar:v1.4'
+	    compile 'com.github.1djmao:WeekCalendar:v1.5'
 	}
   ```
   
@@ -81,6 +86,7 @@ weekCalendar.setOnCurrentMonthDateListener(new WeekCalendar.OnCurrentMonthDateLi
       }
 });
  ```
+## 原作者信息
 ### 公众号
 欢迎大家关注我的微信公众号：非著名程序员（smart_android），更多好的原创文章均首发于微信订阅号：非著名程序员
 ![](https://raw.githubusercontent.com/loonggg/BlogImages/master/%E5%85%AC%E4%BC%97%E5%8F%B7%E4%BA%8C%E7%BB%B4%E7%A0%81/erweima.jpg)
